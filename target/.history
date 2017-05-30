@@ -1,0 +1,4 @@
+compile
+projects
+sbt hello-akka/run
+hello-akka/run
