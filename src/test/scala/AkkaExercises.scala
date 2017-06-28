@@ -75,8 +75,7 @@ class AkkaExercises(_system: ActorSystem)
 // EXERCISE 1
 class Mno extends Actor {
   def receive = {
-    case msg: FullEligibilityCheck => sender ! FullEligibilityCheckResponse(true)
-    case otherMsg => sender ! UnsupportedMessage(otherMsg)
+    ???
   }
 }
 
@@ -91,11 +90,9 @@ object Mno {
 class ScriptRequestRouter extends Actor {
   def receive = {
     case msg: PersoScriptRequest =>
-      val persoScriptGeneratorActor = context.actorOf(Props(new PersoScriptGenerator))
-      persoScriptGeneratorActor.tell(msg, sender)
+      ???
     case msg: WrapScriptRequest =>
-      val wrapScriptActor = context.actorOf(Props(new ScriptWrapper))
-      wrapScriptActor.tell(msg, sender)
+      ???
   }
 }
 
@@ -129,14 +126,12 @@ class ResultsGatherer extends Actor {
 
   def receive = {
     case msg: PersoScriptRequest =>
-      val persoScriptGeneratorActor = context.actorOf(Props(new PersoScriptGenerator))
-      persoScriptGeneratorActor ! msg
+      ??? // Create actor and send request
     case msg: PersoScriptResponse =>
-      results = List(msg.script)
+      ??? // Update the list
     case msg: WrapScriptRequest =>
-      val wrapScriptActor = context.actorOf(Props(new ScriptWrapper))
-      wrapScriptActor ! msg
+      ??? // Create actor and send request
     case msg: WrapScriptResponse =>
-      results = results :+ msg.wrappedScript
+      ??? // Update the list
   }
 }
