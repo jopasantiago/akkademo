@@ -1,4 +1,4 @@
-import akka.actor.{Actor, ActorRef, ActorSystem, Inbox, Props}
+import akka.actor.{Actor, ActorRef, ActorSelection, ActorSystem, Inbox, PoisonPill, Props}
 
 case class GreetingRequest(name: String)
 
@@ -8,7 +8,8 @@ class MessagePrinter extends Actor {
     case msg: GreetingRequest =>
       println(s"Hello ${msg.name}!")
 
-    case _ => println("ERROR: Received message is not a Greeting Request!")
+    case "Moana" => println("hahahaha")
+    //case _ => println("ERROR: Received message is not a Greeting Request!")
   }
 }
 
@@ -19,14 +20,15 @@ object Demo extends App {
   val system = ActorSystem("demo")
 
   // Create the 'scriptGenerator' actor
-  val messagePrinter = system.actorOf(Props[MessagePrinter], "messagePrinter")
+  val messagePrinter: ActorRef = system.actorOf(Props[MessagePrinter], "messagePrinter")
 
-  messagePrinter ! GreetingRequest("Vladimir")
-  //messagePrinter ! 3
-  //messagePrinter ! "Moana"
-  //messagePrinter ! HelloRequest("HELLO")
+//  messagePrinter ! PoisonPill
+//  messagePrinter ! GreetingRequest("Vladimir")
+//  messagePrinter ! 3
+//  messagePrinter ! "Moana"
+//  messagePrinter ! HelloRequest("HELLO")
 
-  val messagePrinterReference = system.actorSelection("/user/messagePrinter")
+  val messagePrinterReference: ActorSelection = system.actorSelection("/user/messagePrinterssss")
 
   messagePrinterReference ! GreetingRequest("Roberto")
 

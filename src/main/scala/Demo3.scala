@@ -39,7 +39,7 @@ class ScriptCreator extends Actor {
 
   def receive = {
     case msg @ RequestWrapper(PersoScriptRequest(data)) =>
-      cps.tell(PersoScriptRequest(data), sender)
+      cps forward PersoScriptRequest(data)
 
     case msg @ RequestWrapper(PackageLoadScriptRequest(data)) =>
       apduGen.tell(PackageLoadScriptRequest(data), sender)

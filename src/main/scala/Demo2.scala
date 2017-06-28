@@ -5,13 +5,11 @@ import akka.actor.{Actor, ActorRef, ActorSystem, Inbox, Props}
 // This is an actor
 class ScriptGenerator extends Actor {
   def receive = {
-    case msg: GenerateInitUpdate =>
-      val initUpdate: String = s"8050${msg.kvn}00080000000000000000"
-      sender ! GenerateInitUpdateResponse(initUpdate)
-
+    case msg @ GenerateInitUpdate(k) =>
     case GetPasscodeResetCommand =>
       sender ! GetPasscodeResetCommandResponse("14FFFFFFFFFFFFFF")
   }
+
 }
 
 // Companion object
@@ -26,13 +24,16 @@ class MessageHandler extends Actor {
   override def receive: Receive = {
     case msg: GenerateInitUpdate =>
       val scriptGenerator = context.actorOf(Props[ScriptGenerator])
-      scriptGenerator ! msg
+      println(s"Sender: $sender")
+      scriptGenerator.tell(msg, self)
 
     case GetPasscodeResetCommand =>
       val scriptGenerator = context.actorOf(Props[ScriptGenerator])
+      println(s"Sender: $sender")
       scriptGenerator ! GetPasscodeResetCommand
 
     case anything => println("Received Message: " +  anything)
+      println(s"Sender: $sender")
   }
 }
 
